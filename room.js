@@ -13,24 +13,33 @@
 // console.log(person_a.getFullName())
 
 var room = []
-room.push({ number: "A101", price: 2000, type: "room_type", descript: "no view"})
-room.push({ number: "A102", price: 3000, type: "room_type", descript: "sea view"})
-room.push({ number: "A201", price: 3000, type: "room_type", descript: "sea view"})
-room.push({ number: "A301", price: 7500, type: "room_type",descript: "mountain view"})
-room.push({ number: "B101", price: 2000, type: "room_type", descript: "no view"})
-room.push({ number: "B102", price: 3000, type: "room_type", descript: "sea view"})
+room.push({ room_id: 1, number: "A101", price: 2000, type: "room_type", descript: "no view"})
+room.push({ room_id: 2, number: "A102", price: 3000, type: "room_type", descript: "sea view"})
+room.push({ room_id: 3, number: "A201", price: 3000, type: "room_type", descript: "sea view"})
+room.push({ room_id: 4, number: "A301", price: 7500, type: "room_type", descript: "mountain view"})
+room.push({ room_id: 5, number: "B101", price: 2000, type: "room_type", descript: "no view"})
+room.push({ room_id: 6, number: "B102", price: 3000, type: "room_type", descript: "sea view"})
+
+let id = 6;
+
 
 addRoom = (number, price, type, description) => {
+    let similar_number = false;
     room.forEach((room) => {
         if(room.number == number) {
-            console.log("Sorry: this room number already have.\nPlease change room number!")
+            console.log("Sorry: this room number already have.\nPlease change room number!");
+            similar_number = true;
         } 
-        // else if (room.number != number) {
-        //     room.push({number: number, price: price, type: type, descript: description})
-        // }
     })
+    if (similar_number == false) {
+        id++;
+        room.push({ room_id:id, number: number, price: price, type: type, descript: description});
+        return room;
+    } else if (similar_number == true) {
+        throw "Sorry: this room number already have.\nPlease change room number!";
+    }
 }
-addRoom('A101',5200,'room_type','no viewwwwwww')
+
 
 showRoom = () => {
     console.table(room)
@@ -38,7 +47,7 @@ showRoom = () => {
     //     console.table(allRoom);
     // })
 }
-// showRoom()
+ showRoom()
 
 module.exports = {
     addRoom: addRoom,

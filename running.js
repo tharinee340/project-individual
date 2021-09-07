@@ -1,6 +1,6 @@
-const { fstat } = require('fs');
 var http = require('http');
 var url = require('url');
+const fs = require('fs');
 
 const {addRoom, showRoom} = require('./room.js');
 
@@ -14,14 +14,16 @@ http.createServer(function (req, res) {
     var data = '';
 
     switch(require_path.pathname) {
-        case 'addRoom':
+        case '/addRoom':
             try {
-                addRoom(require_path.query.number, require_path.query.price, 
+                addRoom(require_path.query.number, parseInt(require_path.query.price), 
                         require_path.query.type, require_path.query.description);
                 message += `Room number ${require_path.query.number} has been added`
+                data = showRoom();
+                showRoom();
             }catch(err) {
                 status = 400;
-                message += (err, 'something went wrong, please try agian!')
+                message += (err)
                 console.log(err);
             }
             break;
@@ -30,13 +32,7 @@ http.createServer(function (req, res) {
                 message = 'path not found!'
             break;
     }
-    let access_log = (new Data()).toISOString() + `${request_path.path}\n`;
-    fs.appendFile('access.log', access_log, (err) => {
-        if(err) {
-            throw err;
-            console.log(err);
-        } 
-    })
+   
     let response_objects = {
         status: status,
         message: message,
@@ -44,7 +40,7 @@ http.createServer(function (req, res) {
     }
 
     res.writeHead(status, {'Content-Type': 'application/json'});
-	res.end(JSON.stringify(response_object));
+	res.end(JSON.stringify(response_objects));
 
 
 }).listen(8080);
