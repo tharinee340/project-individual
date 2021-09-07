@@ -1,8 +1,7 @@
 var http = require('http');
 var url = require('url');
-const fs = require('fs');
 
-const {addRoom, showRoom} = require('./room.js');
+const {addRoom, showRoom, deleteRoom} = require('./room.js');
 
 showRoom();
 
@@ -18,8 +17,19 @@ http.createServer(function (req, res) {
             try {
                 addRoom(require_path.query.number, parseInt(require_path.query.price), 
                         require_path.query.type, require_path.query.description);
-                message += `Room number ${require_path.query.number} has been added`
-                data = showRoom();
+                message += `Room number ${require_path.query.number} has been added.`
+                //data = showRoom(); ยังไม่รู้จะใส่ยังไง
+                showRoom();
+            }catch(err) {
+                status = 400;
+                message += (err)
+                console.log(err);
+            }
+            break;
+        case '/deleteRoom':
+            try {
+                deleteRoom(require_path.query.room_id);
+                message += `Room id ${require_path.query.room_id} has been deleted.`
                 showRoom();
             }catch(err) {
                 status = 400;

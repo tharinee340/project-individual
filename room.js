@@ -40,6 +40,25 @@ addRoom = (number, price, type, description) => {
     }
 }
 
+deleteRoom = (room_id) => {
+    let similar_id = false;
+    let achieve_index;
+    room.forEach((room) => {
+        if (room.room_id == room_id) {
+            similar_id = true;
+        }
+    })
+    achieve_index = room.findIndex(room => room.room_id == room_id)
+    console.log(achieve_index);
+    if (similar_id == true) {
+        
+        room.splice(achieve_index,1); //ลบออก
+        return room;
+    } else if (similar_id == false) {
+        throw "NOT HAVE: room id that you input";
+    }
+}
+
 
 showRoom = () => {
     console.table(room)
@@ -51,6 +70,7 @@ showRoom = () => {
 
 module.exports = {
     addRoom: addRoom,
-    showRoom: showRoom
+    showRoom: showRoom,
+    deleteRoom: deleteRoom
 
 }
