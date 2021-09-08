@@ -1,27 +1,31 @@
-// const Room = function(id, name, price) {
-//     this.id = id;
-//     this.name = name;
-//     this.price = price;
-// }
 
-// //แยกออกมาเพื่อให้สามารถเรียกค่าได้ไวขึ้น
-// Room.prototype.getAllRoom = function() {
-//     return `${this.id} ${this.name} ${this.price}`;
-// }
+const {searchType, room_type} = require('./room_type');
 
-// var person_a = new Room('1', 'Sherlyn', 'A');
-// console.log(person_a.getFullName())
+//const { prototype } = require("events");
 
 var room = []
-room.push({ room_id: 1, number: "A101", price: 2000, type: "room_type", descript: "no view"})
-room.push({ room_id: 2, number: "A102", price: 3000, type: "room_type", descript: "sea view"})
-room.push({ room_id: 3, number: "A201", price: 3000, type: "room_type", descript: "sea view"})
-room.push({ room_id: 4, number: "A301", price: 7500, type: "room_type", descript: "mountain view"})
-room.push({ room_id: 5, number: "B101", price: 2000, type: "room_type", descript: "no view"})
-room.push({ room_id: 6, number: "B102", price: 3000, type: "room_type", descript: "sea view"})
+room.push({ room_id: 1, number: "A101", price: 2000, type: 1, descript: "no view"})
+room.push({ room_id: 2, number: "A102", price: 3000, type: 1, descript: "sea view"})
+room.push({ room_id: 3, number: "A201", price: 3000, type: 2, descript: "sea view"})
+room.push({ room_id: 4, number: "A301", price: 7500, type: 3, descript: "mountain view"})
+room.push({ room_id: 5, number: "B101", price: 2000, type: 1, descript: "no view"})
+room.push({ room_id: 6, number: "B102", price: 3000, type: 2, descript: "sea view"})
+
+//เอาไอดี room ไปเช็คค่า typeid แล้วเอาชื่อของ type มาใส่แทน
+checkType = () => {
+    room.forEach((room) => { 
+        room_type.forEach((type) => {
+            if (room.type == type.id) {
+                room.type = type.type_name;
+            }
+        })
+    })
+    console.table(room)
+}
+checkType()
+
 
 let id = 6;
-
 
 addRoom = (number, price, type, description) => {
     let similar_number = false;
@@ -34,6 +38,7 @@ addRoom = (number, price, type, description) => {
     if (similar_number == false) {
         id++;
         room.push({ room_id:id, number: number, price: price, type: type, descript: description});
+        checkType();
         return room;
     } else if (similar_number == true) {
         throw "Sorry: this room number already have.\nPlease change room number!";
@@ -66,11 +71,11 @@ showRoom = () => {
     //     console.table(allRoom);
     // })
 }
- showRoom()
 
 module.exports = {
     addRoom: addRoom,
     showRoom: showRoom,
-    deleteRoom: deleteRoom
+    deleteRoom: deleteRoom,
+    room: room
 
 }
