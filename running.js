@@ -91,7 +91,7 @@ http.createServer(function (req, res) {
             break;
         case '/showBooking':
             try {
-                let show = showBooking(require_path.query.guest_id);
+                let show = showBooking(parseInt(require_path.query.guest_id));
                 message += 'success';
                 data += JSON.stringify(show);
             } catch (err) {

@@ -1,10 +1,12 @@
 const {addGuest,showGuest,guest} = require('./guest');
 const {booking_room} = require('./booking_room');
+let reg_id = /^\d+$/;
 
 var booking = []
 booking.push({booking_id: 1, guest_id: 1, guest_name: '', total_price: 0})
 booking.push({booking_id: 2, guest_id: 2, guest_name: '', total_price: 0})
 booking.push({booking_id: 3, guest_id: 3, guest_name: '', total_price: 0})
+
 
 //วนลูปหาไอดีของแขกแล้วเอาชื่อมาใส่
 checkGuest = () => {
@@ -34,26 +36,39 @@ checkTotalPrice = () => {
 checkTotalPrice();
 
 
+
 let id = 3
 showBooking = (guest_id) => {
+    let check_id = reg_id.test(guest_id)
     let hasBooking = false
     let index = 0
     let saveIndex;
-    booking.forEach((booking) => {
-        if (booking.guest_id == guest_id) {
-            saveIndex = index;
-            hasBooking = true;
+    console.log(check_id)
+    if(check_id == true) {
+
+        booking.forEach((booking) => {
+            if (booking.guest_id == guest_id) {
+                saveIndex = index;
+                hasBooking = true;
+            }
+            index++
+        });
+
+        if (hasBooking == true) {
+            checkGuest();
+            checkTotalPrice();
+            return booking[saveIndex];
+            
+        } else {
+            throw 'Sorry this guest id not booking yet.'; ///
         }
-        index++
-    })
-    if (hasBooking == true) {
-        checkGuest();
-        checkTotalPrice();
-        return booking[saveIndex];
+        
     } else {
-        throw 'Sorry this guest id not booking yet.';
+        throw 'Your id must be only integer, please try again.'
     }
+    
 }
+
 
 showAllBooking = () => {
     checkGuest();

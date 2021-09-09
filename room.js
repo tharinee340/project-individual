@@ -1,5 +1,9 @@
-
 const {searchType, room_type} = require('./room_type');
+let reg_number = /^[a-zA-Z]{1}\d{3}$/; 
+let reg_price = /^\d+$/;
+let reg_type = /^[1-5]$/;
+let reg_description = /\w/;
+let reg_id = /^\d+$/;
 
 //const { prototype } = require("events");
 
@@ -28,48 +32,54 @@ checkType()
 let id = 6;
 
 addRoom = (number, price, type, description) => {
-    let similar_number = false;
-    room.forEach((room) => {
-        if(room.number == number) {
-            console.log("Sorry: this room number already have.\nPlease change room number!");
-            similar_number = true;
-        } 
-    })
-    if (similar_number == false) {
-        id++;
-        room.push({ room_id:id, number: number, price: price, type: type, descript: description});
-        checkType();
-        return room;
-    } else if (similar_number == true) {
-        throw "Sorry: this room number already have.\nPlease change room number!";
+    if ( (reg_number.test(number) && reg_price.test(price) && reg_type.test(type) && reg_description.test(description)) == true ) {
+        let similar_number = false;
+        room.forEach((room) => {
+            if(room.number == number) {
+                console.log("Sorry: this room number already have.\nPlease change room number!");
+                similar_number = true;
+            } 
+        })
+        if (similar_number == false) {
+            id++;
+            room.push({ room_id:id, number: number, price: price, type: type, descript: description});
+            checkType();
+            return room;
+        } else if (similar_number == true) {
+            throw "Sorry: this room number already have.\nPlease change room number!";
+        }
+    } else {
+        throw "Your input have something wrong, please try again.";
     }
+    
 }
 
 deleteRoom = (room_id) => {
-    let similar_id = false;
-    let achieve_index;
-    room.forEach((room) => {
-        if (room.room_id == room_id) {
-            similar_id = true;
+    if ( reg_id.test(room_id) == true ) {
+        let similar_id = false;
+        let achieve_index;
+        room.forEach((room) => {
+            if (room.room_id == room_id) {
+                similar_id = true;
+            }
+        })
+        achieve_index = room.findIndex(room => room.room_id == room_id)
+        console.log(achieve_index);
+        if (similar_id == true) {
+            
+            room.splice(achieve_index,1); //ลบออก
+            return room;
+        } else if (similar_id == false) {
+            throw "NOT HAVE: room id that you input";
         }
-    })
-    achieve_index = room.findIndex(room => room.room_id == room_id)
-    console.log(achieve_index);
-    if (similar_id == true) {
-        
-        room.splice(achieve_index,1); //ลบออก
-        return room;
-    } else if (similar_id == false) {
-        throw "NOT HAVE: room id that you input";
+    } else {
+        throw "Your input have something wrong, please try again.";
     }
 }
 
 
 showRoom = () => {
     console.table(room)
-    // room.forEach((allRoom) => {
-    //     console.table(allRoom);
-    // })
 }
 
 module.exports = {
